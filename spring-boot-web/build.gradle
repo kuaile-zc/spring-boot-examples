@@ -1,0 +1,77 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'com.neo'
+version = '1.0.01-SNAPSHOT'
+
+description = """spring-boot-web"""
+
+sourceCompatibility = 1.5
+targetCompatibility = 1.5
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+
+
+repositories {
+        
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'2.1.3.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version:'2.1.3.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version:'2.1.3.RELEASE'
+    compile(group: 'mysql', name: 'mysql-connector-java', version:'8.0.15') {
+exclude(module: 'protobuf-java')
+    }
+    compile group: 'org.webjars.bower', name: 'jquery', version:'2.0.3'
+    compile group: 'org.webjars.bower', name: 'bootstrap', version:'3.0.3'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'2.1.3.RELEASE'
+}
+
+task hello <<{
+        println 'Hello world!'
+}
+
+task upper << {
+    String str = 'mY_nAmE'
+    println 'Original: ' + str
+    println 'Upper case: ' + str.toUpperCase()
+}
+
+task count << {
+    4.times {print "$it "}
+}
+
+task intro(dependsOn: hello) << {
+    println "I'm Gradle"
+}
+
+task taskX(dependsOn: 'taskY') << {
+    println 'taskX'
+}
+task taskY << {
+    println 'taskY'
+}
+
+4.times { counter ->
+    task "task$counter" << {
+        println "I'm task number $counter"
+    }
+}
+
+task0.dependsOn task2, task3
+
+task helloName << {
+    println 'Hello Earth'
+}
+helloName.doFirst {
+    println 'Hello Venus'
+}
+helloName << { // << like doLast
+    println 'Hello Jupiter'
+}
+helloName.doLast {
+    println 'Hello Mars'
+}
